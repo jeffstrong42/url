@@ -10,22 +10,21 @@ Route::post('/', function(){
 	$url = Input::get('url');
 
 	// Validate the url
+	$v = Url::validate(array('url' => $url));
+	if ( $v !== true ){
+		return Redirect::to('/')->with_errors($v->errors);
+	}
 
 	// If the url is already in the table, return it
 	$record = Url::where_url($url)->first();
-
 	if ( $record ) {
-		//reutn it
 		return View::make('home.result')->with('shortened', $record->shortened);
 	}
 
-
-	$shortened = Url::get_unique_short_url();
-
-	// Otherwise add a new row and return the shortened URL
+// Otherwise add a new row and return the shortened URL
 	$row = Url::create(array(
 		'url' => $url,
-		'shortened' => $shortened
+		'shortened' => Url::get_unique_short_url()
 	));
 
 	// Create a results view, and present the short url to the user

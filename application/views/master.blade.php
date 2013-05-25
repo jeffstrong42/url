@@ -2,7 +2,8 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title></title>
+	{{ HTML::style('css/style.css') }}
+	<title>My Awesome URL Shortener</title>
 </head>
 <body>
 
