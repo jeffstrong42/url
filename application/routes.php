@@ -20,11 +20,23 @@ Route::post('/', function(){
 	}
 
 
+	$shortened = Url::get_unique_short_url();
+
 	// Otherwise add a new row and return the shortened URL
-
-
+	$row = Url::create(array(
+		'url' => $url,
+		'shortened' => $shortened
+	));
 
 	// Create a results view, and present the short url to the user
+	if ( $row ) {
+		return View::make('home.result')->with('shortened', $row->shortened);
+	} else {
+		return View::make('home.error')->with('shortened', $row->shortened);
+	}
+
+
+
 });
 
 Route::get('(:any)',  function($shortened){
